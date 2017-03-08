@@ -1739,8 +1739,14 @@ function kk_cmd()
 			OUT_DIR=$(ls -l out/target/product/ |awk '/^d/ {print $NF}')
 			for i in $OUT_DIR
 			do 
+				exist_proj=$i
+				exist_type=$(cat out/target/product/$i/system/build.prop  | grep ro.build.type | awk -F '=' '{print $2}')
+				echo "$exist_proj $exist_type"
 				echo "$i"
 				echo "$(cat out/target/product/$i/system/build.prop  | grep ro.build.type | awk -F '=' '{print $2}')"
+				if [ $2 = "l" ]; then
+					show_cmd lunch full_$exist_proj-$exist_type
+				fi
 			done
 
 	fi
